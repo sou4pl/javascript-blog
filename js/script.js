@@ -5,7 +5,7 @@ function titleClickHandler(event){
   const clickedElement = this;
   console.log('Link was clicked!');
   console.log(event);
- 
+
 
   // [DONE] remove class 'acitve' from all article links
 
@@ -19,16 +19,16 @@ function titleClickHandler(event){
 
   console.log('clickedElement:', clickedElement);
   clickedElement.classList.add('active');
-  
+
   // [DONE] remove class 'active from all articles
-  
+
   const activeArticles = document.querySelectorAll('.post.active');
 
   for(let activeArticle of activeArticles){
     activeArticle.classList.remove('active');
   }
   // [DONE] get 'href' attribute form the clicked link
-    
+
   const articleSelector = clickedElement.getAttribute('href');
   console.log('articleSelector', articleSelector);
 
@@ -44,14 +44,14 @@ function titleClickHandler(event){
 
 const optArticleSelector = '.post',
   optTitleSelector = '.post-title',
-  optTitleListSelector = '.titles';
+  optTitleListSelector = '.titles',
+  optArticleTagSelector = '.post-tags .list';
 
 function generateTitleLinks(){
 
   // [DONE] remove content of titleList for each article
 
   const titleList = document.querySelector(optTitleListSelector);
-  console.log('titleList', titleList);
   function clearMessages(){
     titleList.innerHTML = '';
   }
@@ -66,13 +66,13 @@ function generateTitleLinks(){
 
     // [DONE] get the article id
 
-    const articleId = article.getAttribute('id'); 
+    const articleId = article.getAttribute('id');
     console.log('articleId', articleId);
-    
+
     // [DONE] find the title element and get the title from the title element
 
     const articleTitle = article.querySelector(optTitleSelector).innerHTML;
-    
+
     // [DONE] create HTML of the link
 
     const linkHTML = '<li><a href="#' + articleId + '"><span>' + articleTitle + '</span></a></li>';
@@ -81,7 +81,6 @@ function generateTitleLinks(){
     // [DONE] insert link into html var
 
     html = html + linkHTML;
-    console.log('html', html);
   }
   // [DONE] insert link into titleList
 
@@ -96,3 +95,58 @@ console.log('links', links);
 for(let link of links){
   link.addEventListener('click', titleClickHandler);
 }
+
+function generateTags(){
+
+  // find all articles
+
+  const articles = document.querySelectorAll(optArticleSelector);
+
+  // START LOOP: for every article:
+
+  for(let article of articles){
+  
+    // find tags wrapper
+
+    const tagWrapper = article.querySelector(optArticleTagSelector);
+    console.log('tagWrapper', tagWrapper);
+
+    // make html variable with empty string
+    let html = '';
+    console.log('html', html);
+
+    // get tags from data-tags attribute
+
+    const articleTags = article.getAttribute('data-tags');
+    console.log('articleTags', articleTags);
+
+    // split tags into array
+
+    const articleTagsArray = articleTags.split(' ');
+    console.log('articleTagsArray', articleTagsArray);
+
+    // START LOOP: for each tag
+
+    for(let tag of articleTagsArray){
+
+      // generate HTML of the link
+
+      const htmlSingle = '<li><a href="#tag-' + tag + '"><span>' + tag + '</span></a></li>';
+      console.log('linkHTML', htmlSingle);
+
+      // add generated code to html variable
+
+      html = html + htmlSingle;
+      console.log('html', html);
+
+    // END LOOP: for each tag
+    }
+    // insert HTML of all the links into the tags wrapper
+
+  tagWrapper.innerHTML = html;
+  console.log('hmtl after loop', html);
+  // END LOOP: for every article:
+  }
+}
+
+generateTags();
