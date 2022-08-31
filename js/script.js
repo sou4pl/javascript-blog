@@ -92,6 +92,11 @@ generateTitleLinks();
 const links = document.querySelectorAll('.titles a');
 console.log('links', links);
 
+
+const articleDefault = document.querySelector('.titles a');
+console.log('articleDeafult', articleDefault);
+articleDefault.classList.add('active');
+
 for(let link of links){
   link.addEventListener('click', titleClickHandler);
 }
