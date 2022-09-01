@@ -47,7 +47,7 @@ const optArticleSelector = '.post',
   optTitleListSelector = '.titles',
   optArticleTagSelector = '.post-tags .list';
 
-function generateTitleLinks(){
+function generateTitleLinks(customSelector = ''){
 
   // [DONE] remove content of titleList for each article
 
@@ -61,7 +61,7 @@ function generateTitleLinks(){
 
   let html = '';
 
-  const articles = document.querySelectorAll(optArticleSelector);
+  const articles = document.querySelectorAll(optArticleSelector + customSelector);
   for(let article of articles){
 
     // [DONE] get the article id
@@ -103,55 +103,100 @@ for(let link of links){
 
 function generateTags(){
 
-  // find all articles
+  //[DONE] find all articles
 
   const articles = document.querySelectorAll(optArticleSelector);
 
-  // START LOOP: for every article:
+  //[DONE] START LOOP: for every article:
 
   for(let article of articles){
   
-    // find tags wrapper
+    //[DONE] find tags wrapper
 
     const tagWrapper = article.querySelector(optArticleTagSelector);
     console.log('tagWrapper', tagWrapper);
 
-    // make html variable with empty string
+    //[DONE] make html variable with empty string
     let html = '';
     console.log('html', html);
 
-    // get tags from data-tags attribute
+    //[DONE] get tags from data-tags attribute
 
     const articleTags = article.getAttribute('data-tags');
     console.log('articleTags', articleTags);
 
-    // split tags into array
+    //[DONE] split tags into array
 
     const articleTagsArray = articleTags.split(' ');
     console.log('articleTagsArray', articleTagsArray);
 
-    // START LOOP: for each tag
+    //[DONE] START LOOP: for each tag
 
     for(let tag of articleTagsArray){
 
-      // generate HTML of the link
+      //[DONE] generate HTML of the link
 
       const htmlSingle = '<li><a href="#tag-' + tag + '"><span>' + tag + '</span></a></li>';
       console.log('linkHTML', htmlSingle);
 
-      // add generated code to html variable
+      //[DONE] add generated code to html variable
 
-      html = html + htmlSingle;
+      html = html + htmlSingle +' ';
       console.log('html', html);
 
-    // END LOOP: for each tag
+    //[DONE] END LOOP: for each tag
     }
-    // insert HTML of all the links into the tags wrapper
+    //[DONE] insert HTML of all the links into the tags wrapper
 
   tagWrapper.innerHTML = html;
   console.log('hmtl after loop', html);
-  // END LOOP: for every article:
+  //[DONE] END LOOP: for every article:
   }
 }
 
 generateTags();
+
+function tagClickHandler(event){
+
+  // prevent default action for this event 
+  event.preventDefault();
+  // make new constant named "clickedElement" and give it the value of "this" 
+  const clickedElement = this;
+  // make a new constant "href" and read the attribute "href" of the clicked element 
+  const href = clickedElement.getAttribute('href');
+  console.log('href', href);
+  // make a new constant "tag" and extract tag from the "href" constant 
+  const tag = href.replace('#tag-','');
+  // find all tag links with class active 
+  tagLinksActive = document.querySelectorAll('a.active[href^"#tag-"]');
+  // START LOOP: for each active tag link 
+  for(let tagLinkActive of tagLinksActive){
+    // remove class active 
+    tagLinkActive.classList.remove('active');
+  // END LOOP: for each active tag link 
+  }
+  // find all tag links with "href" attribute equal to the "href" constant 
+  const linksSelected = document.querySelectorAll('a[href="' + href + '"]');
+  // START LOOP: for each found tag link 
+  for(let linkSelected of linksSelected){
+    // add class active 
+    linkSelected.classList.add('active');
+  // END LOOP: for each found tag link 
+  }
+  // execute function "generateTitleLinks" with article selector as argument 
+  generateTitleLinks('[data-tags~="' + tag + '"]');
+}
+
+function addClickListenersToTags(){
+  // find all links to tags 
+  const tagLinks = document.querySelectorAll('a[href^"#tag-"]');
+  console.log('tagLinks', tagLinks);
+  // START LOOP: for each link 
+  for(let tagLink of tagLinks){
+    // add tagClickHandler as event listener for that link 
+    tagLink.addEventListener('click', tagClickHandler)
+  // END LOOP: for each link 
+  }
+}
+
+addClickListenersToTags();
