@@ -264,7 +264,6 @@ function generateAuthors(){
 
     //make html variable with empty string
     let html = '';
-    let listAuthorsHTML = '';
 
     //get authors from data-author attribute
     const articleAuthor = article.getAttribute('data-author');
@@ -277,16 +276,21 @@ function generateAuthors(){
       allAuthors[articleAuthor]++;
     }
     html = '<a href="#'+ articleAuthor +'"><span>' + articleAuthor + '</span></a>';
-    listAuthorsHTML = '<li><a href="#'+ articleAuthor +'"><span>' + articleAuthor + ' (' + allAuthors[articleAuthor] +  ')</span></a></li>';
-    console.log('listAuthorHTML', listAuthorsHTML);
+
     //insert HTML of all the links into the tags wrapper
     AuthorWrapper.innerHTML = html;
 
     //END LOOP: for every article:
   }
   console.log('allAuthors', allAuthors);
-  const listAuthors = document.querySelector(optAuthorsListSelector);
-  console.log('listAuthors', listAuthors);
+  const authorsList = document.querySelector(optAuthorsListSelector);
+  let allAuthorsHTML = '';
+
+  for(let author in allAuthors){
+    allAuthorsHTML += '<li class="post-author"><a href="#'+ author +'"><span>' + author + ' (' + allAuthors[author] +  ')</span></a></li>';
+  }
+  authorsList.innerHTML = allAuthorsHTML;
+
 
 }
 
